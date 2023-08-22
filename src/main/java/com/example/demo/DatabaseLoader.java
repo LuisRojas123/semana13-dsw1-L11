@@ -7,56 +7,59 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
-	private final InstrumentoRepository repositoryI;
-	private final MusicoRepository repositoryM;
-	private final BandaRepository repositoryB;
-	private final IntegranteRepository repositoryN;
+	private final ProductoRepository repositoryP;
+	private final VentaRepository repositoryV;
+	private final VentadetalleRepository repositoryVD;
 
 	@Autowired
 	public DatabaseLoader(
-		InstrumentoRepository repositoryI,
-		 MusicoRepository repositoryM,
-		 BandaRepository repositoryB,
-		 IntegranteRepository repositoryN) {
-		this.repositoryI = repositoryI;
-		this.repositoryM = repositoryM;
-		this.repositoryB = repositoryB;
-		this.repositoryN = repositoryN;
+		ProductoRepository repositoryP,
+		 VentaRepository repositoryV,
+		 VentadetalleRepository repositoryVD) {
+
+
+		this.repositoryP = repositoryP;
+		this.repositoryV = repositoryV;
+		this.repositoryVD = repositoryVD;
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
 		
-		Instrumento iVoz = new Instrumento("Voz", "Viento", "Voz humana");
-		Instrumento iGuitarrElectrica = new Instrumento("Guitarra Eléctrica", "Eléctrica", "de madera, SIN caja de resonancia, 6 cuerdas templadas metálicas, pastillas y amplificador");
-		Instrumento iBajo = new Instrumento("Bajo", "Eléctrico", "Ritmos");
-		this.repositoryI.save(new Instrumento("Guitarra Acústica", "Cuerda", "de madera, con caja de resonancia, 6 cuerdas templadas"));
-		this.repositoryI.save(new Instrumento("Ukelele","Cuerda","de madera, con caja de resonancia pequeña, 4 cuerdas templadas"));
-		this.repositoryI.save(new Instrumento("Melódica","Viento","teclado pequeño de 2 octavas, sonorizado por soplido"));
-		this.repositoryI.save(iVoz);
-		this.repositoryI.save(iGuitarrElectrica);
-		this.repositoryI.save(iBajo);
-		this.repositoryI.save(new Instrumento("Batería", "Percusión", "Percisiones"));
+		
 
-		Musico mFreddie = new Musico("Freddie");
-		Musico mBrian = new Musico("Brian");
-		Musico mRogerWaters = new Musico("Roger Waters");
-		this.repositoryM.save(mFreddie);
-		this.repositoryM.save(mBrian);
-		this.repositoryM.save(mRogerWaters);
-		this.repositoryM.save(new Musico("Roger"));
+		//Datos iniciales de las tabla Producto
+ 
+		Producto pEjemProducto1 = new Producto("Producto Ejemplo 1",250);
+		Producto pEjemProducto2 = new Producto("Producto Ejemplo 2",300);
+		Producto pEjemProducto3 = new Producto("Producto Ejemplo 3",428);
+		this.repositoryP.save(pEjemProducto1);
+		this.repositoryP.save(pEjemProducto2);
+		this.repositoryP.save(pEjemProducto3);
+		this.repositoryP.save(new Producto("Producto Ejemplo 4",428));
 
-		Banda bQueen = new Banda("Queen");
-		Banda bPinkFloyd = new Banda("Pink Floyd");
-		this.repositoryB.save(bQueen);
-		this.repositoryB.save(bPinkFloyd);
+		//Datos iniciales de las tabla Venta
 
-		Integrante intFreddie = new Integrante(bQueen, mFreddie, iVoz);
-		this.repositoryN.save(intFreddie);
-		Integrante intBrian = new Integrante(bQueen, mBrian, iGuitarrElectrica);
-		this.repositoryN.save(intBrian);
-		Integrante intRogerWaters = new Integrante(bPinkFloyd, mRogerWaters, iBajo);
-		this.repositoryN.save(intRogerWaters);
+		Venta pEjemVenta1 = new Venta(2250);
+		Venta pEjemVenta2 = new Venta(2312);
+		this.repositoryV.save(pEjemVenta1);
+		this.repositoryV.save(pEjemVenta2);
+
+
+		//Datos iniciales de las tabla Detalle de Venta
+
+		//PRIMER DETALLE DE VENTAS
+		Ventadetalle pEjemVentaDetalle1 = new Ventadetalle(pEjemVenta1,pEjemProducto1,3);
+		Ventadetalle pEjemVentaDetalle2 = new Ventadetalle(pEjemVenta1,pEjemProducto2,5);
+		this.repositoryVD.save(pEjemVentaDetalle1);
+		this.repositoryVD.save(pEjemVentaDetalle2);
+
+		//SEGUNDO DETALLE DE VENTAS
+
+		Ventadetalle pEjemVentaDetalle3 = new Ventadetalle(pEjemVenta2,pEjemProducto2,2);
+		Ventadetalle pEjemVentaDetalle4 = new Ventadetalle(pEjemVenta2,pEjemProducto3,4);
+		this.repositoryVD.save(pEjemVentaDetalle3);
+		this.repositoryVD.save(pEjemVentaDetalle4);
 
 
 	}

@@ -1,4 +1,4 @@
-@server = https://redesigned-space-giggle-4gw7x96w53qwwx-8080.app.github.dev
+@server = https://verbose-space-acorn-7v9wvvg6764p3q7g-8080.app.github.dev
 @instumentos = {{server}}/api/instrumentos
 @musicos = {{server}}/api/musicos
 ###
@@ -21,3 +21,9 @@ Content-Type: application/json
 GET {{server}}/api/integrantes/1/instrumento
 ###
 GET {{server}}/api/bandas/1/formacion
+
+###
+GET {{server}}/api/ventasdetalles/formacion
+
+###
+GET {{server}}/api/ventas/1/formaciones
