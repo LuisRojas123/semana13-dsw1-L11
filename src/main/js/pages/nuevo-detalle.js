@@ -1,21 +1,23 @@
 const React = require('react');
-const {useState, useEffect} = require('react');
-const { Link,useParams } = require('react-router-dom');
 const client = require('../client');
+const { Link, useParams, } = require('react-router-dom');
+const {useState, useEffect} = require('react');
 
-const PageNuevoDetalleVenta = () => {
+
+const PageNuevoDetalle = () => {
 
     let { id } = useParams();
     const [productos, setProductos] = useState([])
-    const [idProducto, setIdProducto] = useState('')
+    const [idProducto, setIdProducto] = useState('');
+    const [cantidad, setCantidad] = useState('');
 
     const handleSubmit = (evento)=>{
         evento.preventDefault();
         client({
             method: 'POST',
-            path: '/api/productos',
+            path: '/api/ventadetalles',
             entity: {
-                venta: venta,
+                venta: 'http://localhost:8080/api/ventas/'+id,
                 producto: 'http://localhost:8080/api/productos/'+idProducto,
                 cantidad : cantidad
             },
@@ -42,14 +44,10 @@ const PageNuevoDetalleVenta = () => {
 
     return (
         <>
-            <h1>Nuevo Detalle de Venta</h1>
+            <h1>Nuevo Detalle</h1>
             <form onSubmit={handleSubmit}>
 
-            <label htmlFor='venta'>Venta</label>
-                <input type="number" id="venta" name="venta" onChange={(e)=>setVenta(e.target.value)} />
-                <br />
-                
-                <label>Producto</label>
+                <label htmlFor='producto'>Producto: </label>
                 <select name="producto" id="producto" onChange={(e)=>{setIdProducto(e.target.value)}}>
                     {productos.map(producto => {	
                         return (
@@ -57,16 +55,15 @@ const PageNuevoDetalleVenta = () => {
                         )
                     })}
                 </select>
+
                 <label htmlFor='cantidad'>Cantidad</label>
                 <input type="number" id="cantidad" name="cantidad" onChange={(e)=>setCantidad(e.target.value)} />
-                <br />
 
-                <input type="submit" value="Nuevo Detalle de Venta" />
+                <input type="submit" value="Nuevo Detalle" />
 
             </form>
             <Link to="/">Volver</Link>
         </>
     )
 }
-
-module.exports = PageNuevoDetalleVenta;
+module.exports = PageNuevoDetalle;

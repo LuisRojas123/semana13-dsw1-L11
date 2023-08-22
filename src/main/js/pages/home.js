@@ -28,9 +28,8 @@ class PageHome extends React.Component {
 						
 					</div>
 					<div style={{"width": "calc(100% / 3)"}}>
-						<Titulo entidad="Detalle de Ventas" emoji="🎸" />
+						<Titulo entidad="Ventas" emoji="🎸" />
 						<VentaList ventas={this.state.ventas} />
-						<Link to={`/nuevo-detalle-venta`}>Agregar Detalle Venta</Link> |  
 						
 					</div>
 					
@@ -123,7 +122,7 @@ class Venta extends React.Component {
 			<tr>
 				<td>{this.props.venta.total}</td>
 				<td>
-					<Link to={`/ver-total/${id}`}>Ver</Link> | 
+					<Link to={`/ver-venta/${id}`}>Ver Venta</Link> | 
 				</td>
 			</tr>
 		)

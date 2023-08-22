@@ -23,7 +23,7 @@ GET {{server}}/api/integrantes/1/instrumento
 GET {{server}}/api/bandas/1/formacion
 
 ###
-GET {{server}}/api/ventasdetalles/formacion
+
 
 ###
-GET {{server}}/api/ventas/1/formaciones
+GET {{server}}/api/ventas/1/formacion

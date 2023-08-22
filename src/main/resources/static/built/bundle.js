@@ -40800,13 +40800,17 @@ var _require = __webpack_require__(/*! react-router-dom */ "./node_modules/react
   createBrowserRouter = _require.createBrowserRouter,
   RouterProvider = _require.RouterProvider;
 var PageHome = __webpack_require__(/*! ./pages/home */ "./src/main/js/pages/home.js");
-var PageNuevoDetalleVenta = __webpack_require__(/*! ./pages/nuevo-detalle-venta */ "./src/main/js/pages/nuevo-detalle-venta.js");
+var PageVerVenta = __webpack_require__(/*! ./pages/ver-venta */ "./src/main/js/pages/ver-venta.js");
+var PageNuevoDetalle = __webpack_require__(/*! ./pages/nuevo-detalle */ "./src/main/js/pages/nuevo-detalle.js");
 var router = createBrowserRouter([{
   path: '/',
   element: /*#__PURE__*/React.createElement(PageHome, null)
 }, {
-  path: '/nuevo-detalle-venta',
-  element: /*#__PURE__*/React.createElement(PageNuevoDetalleVenta, null)
+  path: '/ver-venta/:id',
+  element: /*#__PURE__*/React.createElement(PageVerVenta, null)
+}, {
+  path: '/ver-venta/:id/nuevo-detalle',
+  element: /*#__PURE__*/React.createElement(PageNuevoDetalle, null)
 }]);
 ReactDOM.render( /*#__PURE__*/React.createElement(React.StrictMode, null, /*#__PURE__*/React.createElement(RouterProvider, {
   router: router
@@ -40923,13 +40927,11 @@ var PageHome = /*#__PURE__*/function (_React$Component) {
           "width": "calc(100% / 3)"
         }
       }, /*#__PURE__*/React.createElement(Titulo, {
-        entidad: "Detalle de Ventas",
+        entidad: "Ventas",
         emoji: "\uD83C\uDFB8"
       }), /*#__PURE__*/React.createElement(VentaList, {
         ventas: this.state.ventas
-      }), /*#__PURE__*/React.createElement(Link, {
-        to: "/nuevo-detalle-venta"
-      }, "Agregar Detalle Venta"), " |"), /*#__PURE__*/React.createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         style: {
           "width": "calc(100% / 3)"
         }
@@ -41019,8 +41021,8 @@ var Venta = /*#__PURE__*/function (_React$Component5) {
     value: function render() {
       var id = this.props.venta._links.self.href.split("/").slice(-1);
       return /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, this.props.venta.total), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(Link, {
-        to: "/ver-total/".concat(id)
-      }, "Ver"), " |"));
+        to: "/ver-venta/".concat(id)
+      }, "Ver Venta"), " |"));
     }
   }]);
   return Venta;
@@ -41029,10 +41031,10 @@ module.exports = PageHome;
 
 /***/ }),
 
-/***/ "./src/main/js/pages/nuevo-detalle-venta.js":
-/*!**************************************************!*\
-  !*** ./src/main/js/pages/nuevo-detalle-venta.js ***!
-  \**************************************************/
+/***/ "./src/main/js/pages/nuevo-detalle.js":
+/*!********************************************!*\
+  !*** ./src/main/js/pages/nuevo-detalle.js ***!
+  \********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41043,14 +41045,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var _require = __webpack_require__(/*! react */ "./node_modules/react/index.js"),
-  useState = _require.useState,
-  useEffect = _require.useEffect;
-var _require2 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js"),
-  Link = _require2.Link,
-  useParams = _require2.useParams;
 var client = __webpack_require__(/*! ../client */ "./src/main/js/client.js");
-var PageNuevoDetalleVenta = function PageNuevoDetalleVenta() {
+var _require = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js"),
+  Link = _require.Link,
+  useParams = _require.useParams;
+var _require2 = __webpack_require__(/*! react */ "./node_modules/react/index.js"),
+  useState = _require2.useState,
+  useEffect = _require2.useEffect;
+var PageNuevoDetalle = function PageNuevoDetalle() {
   var _useParams = useParams(),
     id = _useParams.id;
   var _useState = useState([]),
@@ -41061,13 +41063,17 @@ var PageNuevoDetalleVenta = function PageNuevoDetalleVenta() {
     _useState4 = _slicedToArray(_useState3, 2),
     idProducto = _useState4[0],
     setIdProducto = _useState4[1];
+  var _useState5 = useState(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    cantidad = _useState6[0],
+    setCantidad = _useState6[1];
   var handleSubmit = function handleSubmit(evento) {
     evento.preventDefault();
     client({
       method: 'POST',
-      path: '/api/productos',
+      path: '/api/ventadetalles',
       entity: {
-        venta: venta,
+        venta: 'http://localhost:8080/api/ventas/' + id,
         producto: 'http://localhost:8080/api/productos/' + idProducto,
         cantidad: cantidad
       },
@@ -41093,18 +41099,11 @@ var PageNuevoDetalleVenta = function PageNuevoDetalleVenta() {
       setProductos(productos2);
     });
   }, []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Nuevo Detalle de Venta"), /*#__PURE__*/React.createElement("form", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Nuevo Detalle"), /*#__PURE__*/React.createElement("form", {
     onSubmit: handleSubmit
   }, /*#__PURE__*/React.createElement("label", {
-    htmlFor: "venta"
-  }, "Venta"), /*#__PURE__*/React.createElement("input", {
-    type: "number",
-    id: "venta",
-    name: "venta",
-    onChange: function onChange(e) {
-      return setVenta(e.target.value);
-    }
-  }), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Producto"), /*#__PURE__*/React.createElement("select", {
+    htmlFor: "producto"
+  }, "Producto: "), /*#__PURE__*/React.createElement("select", {
     name: "producto",
     id: "producto",
     onChange: function onChange(e) {
@@ -41124,14 +41123,79 @@ var PageNuevoDetalleVenta = function PageNuevoDetalleVenta() {
     onChange: function onChange(e) {
       return setCantidad(e.target.value);
     }
-  }), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("input", {
+  }), /*#__PURE__*/React.createElement("input", {
     type: "submit",
-    value: "Nuevo Detalle de Venta"
+    value: "Nuevo Detalle"
   })), /*#__PURE__*/React.createElement(Link, {
     to: "/"
   }, "Volver"));
 };
-module.exports = PageNuevoDetalleVenta;
+module.exports = PageNuevoDetalle;
+
+/***/ }),
+
+/***/ "./src/main/js/pages/ver-venta.js":
+/*!****************************************!*\
+  !*** ./src/main/js/pages/ver-venta.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+var client = __webpack_require__(/*! ../client */ "./src/main/js/client.js");
+var _require = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js"),
+  Link = _require.Link,
+  useParams = _require.useParams;
+var _require2 = __webpack_require__(/*! react */ "./node_modules/react/index.js"),
+  useState = _require2.useState,
+  useEffect = _require2.useEffect;
+var PageVerVenta = function PageVerVenta() {
+  var _useParams = useParams(),
+    id = _useParams.id;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    venta = _useState2[0],
+    setVenta = _useState2[1];
+  var _useState3 = useState([]),
+    _useState4 = _slicedToArray(_useState3, 2),
+    ventadetalles = _useState4[0],
+    setVentaDetalles = _useState4[1];
+  useEffect(function () {
+    url_venta = '/api/ventas/' + id;
+    client({
+      method: 'GET',
+      path: url_venta
+    }).done(function (response) {
+      return setVenta(response.entity);
+    });
+    client({
+      method: 'GET',
+      path: url_venta + '/formacion'
+    }).done(function (response) {
+      return setVentaDetalles(response.entity);
+    });
+  }, []);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Venta"), /*#__PURE__*/React.createElement("table", {
+    border: "1"
+  }, /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Total"), /*#__PURE__*/React.createElement("td", null, venta.total)))), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h2", null, "Detalle De Venta"), /*#__PURE__*/React.createElement("table", {
+    border: "1"
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "NOMBRE"), /*#__PURE__*/React.createElement("th", null, "PRECIO"), /*#__PURE__*/React.createElement("th", null, "CANTIDAD"))), /*#__PURE__*/React.createElement("tbody", null, ventadetalles.map(function (ventadetalle) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: ventadetalle.ID
+    }, /*#__PURE__*/React.createElement("td", null, ventadetalle.NOMBRE), /*#__PURE__*/React.createElement("td", null, ventadetalle.PRECIO), /*#__PURE__*/React.createElement("td", null, ventadetalle.CANTIDAD));
+  }))), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Link, {
+    to: "/ver-venta/".concat(id, "/nuevo-detalle")
+  }, "Agregar Detalle Venta"), " |", /*#__PURE__*/React.createElement(Link, {
+    to: "/"
+  }, "Volver"));
+};
+module.exports = PageVerVenta;
 
 /***/ }),
 
